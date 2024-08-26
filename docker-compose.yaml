@@ -1,0 +1,16 @@
+version: '3.3'
+
+volumes:
+  mongodb_data:
+  mysql_data:
+
+services:
+  mysql:
+    image: bitnami/mysql:8.0
+    environment:
+      - MYSQL_ROOT_PASSWORD=123456
+      - TZ=Asia/Shanghai
+    volumes:
+      - 'mysql_data:/Users/Shared/mysql'
+    ports:
+      - "3306:3306"
