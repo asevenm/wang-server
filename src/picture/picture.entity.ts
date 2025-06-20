@@ -13,5 +13,5 @@ export class Picture {
   url: string;
 
   @ManyToOne(() => Instrument, (instrument) => instrument.images)
-  insturument: Instrument;
+  instrument: Instrument; // 修正拼写错误：insturument -> instrument
 }
