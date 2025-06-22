@@ -1,4 +1,4 @@
-FROM node:24-alpine
+FROM node
 WORKDIR /app
 COPY . .
 RUN yarn
