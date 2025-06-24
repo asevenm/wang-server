@@ -5,6 +5,12 @@ volumes:
   mysql_data:
 
 services:
+  wang-server:
+    container_name: wang-server
+    ports:
+      - "3001:3001"
+    restart: always
+
   mysql:
     image: bitnami/mysql:8.0
     environment:
