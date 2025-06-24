@@ -7,7 +7,15 @@ volumes:
 services:
   wang-server:
     image: wang-server
-    container_name: wang-server
+    container_name: wang-serveo
+    environment:
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_DATABASE: wang_db
+      DB_USERNAME: root
+      DB_PASSWORD: root@ncu 
+    depends_on:
+      - mysql
     ports:
       - "3001:3001"
     restart: always
@@ -19,8 +27,9 @@ services:
     ports:
       - "3306:3306"
     environment:
-      DB_DATABASE: wang_db
-      DB_USERNAME: root
-      DB_PASSWORD: root@ncu
+      MYSQL_ROOT_PASSWORD: root@ncu
+      MYSQL_DATABASE: wang_db
+      MYSQL_USER: aseven
+      MYSQL_PASSWORD: 123456
     volumes:
-      - ./mysql-data:/var/lib/mysql
+      - mysql-data:/bitnami/mysql
