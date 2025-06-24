@@ -3,7 +3,7 @@ version: '3.3'
 services:
   wang-server:
     image: wang-server
-    container_name: wang-serveo
+    container_name: wang-server
     environment:
       DB_HOST: mysql
       DB_PORT: 3306
