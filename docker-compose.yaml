@@ -1,9 +1,5 @@
 version: '3.3'
 
-volumes:
-  mongodb_data:
-  mysql_data:
-
 services:
   wang-server:
     image: wang-server
@@ -33,3 +29,5 @@ services:
       MYSQL_PASSWORD: 123456
     volumes:
       - mysql-data:/bitnami/mysql
+volumes:
+  mysql-data:
