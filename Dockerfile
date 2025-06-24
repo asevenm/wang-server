@@ -3,4 +3,4 @@ WORKDIR /app
 COPY . .
 RUN yarn
 EXPOSE 3001
-CMD ["node", "index.js"]
+CMD ["node", "dist/main.js"]
