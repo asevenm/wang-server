@@ -1,12 +1,11 @@
-CMD ["node", "dist/main.js"]
-FROM node:18-alpine
+FROM node
 
 # 1. 设置工作目录
 WORKDIR /app
 
 # 2. 安装依赖
 COPY package*.json ./
-RUN yarn
+RUN yarn install
 
 # 3. 复制项目文件
 COPY . .
