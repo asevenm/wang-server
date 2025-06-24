@@ -18,6 +18,9 @@ export class Type {
   @Column()
   name: string;
 
+  @Column()
+  type: 1 | 2;
+
   @TreeChildren()
   children: Type[];
 
