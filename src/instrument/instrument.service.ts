@@ -14,11 +14,8 @@ import {
   CreateFeatureImageDto,
 } from './instrument.dto';
 import { PaginationParams } from 'src/types/common';
-import { Pagination, paginate } from 'nestjs-typeorm-paginate';
-import {
-  CustomPaginationMeta,
-  getPaginationOptions,
-} from 'src/utils/pagination';
+import { Pagination } from 'nestjs-typeorm-paginate';
+import { CustomPaginationMeta } from 'src/utils/pagination';
 import { Type } from './entities/type.entity';
 import { Model } from './entities/model.entity';
 import { Feature } from './entities/feature.entity';
@@ -328,6 +325,24 @@ export class InstrumentService {
     return this.paramRepository.find({ where: { model: { id: model.id } } });
   }
 
+  async getAllInstrument(searchParams: { typeType?: 1 | 2 }) {
+    const queryBuilder = this.instrumentRepository
+      .createQueryBuilder('instrument')
+      .leftJoinAndSelect('instrument.type', 'type')
+      .leftJoinAndSelect('instrument.features', 'feature')
+      .leftJoinAndSelect('instrument.images', 'images')
+      .leftJoinAndSelect('instrument.models', 'model')
+      .leftJoinAndSelect('model.params', 'param')
+      .distinct(true);
+
+    if (searchParams.typeType) {
+      queryBuilder.andWhere('type.type = :typeType', {
+        typeType: searchParams.typeType,
+      });
+    }
+    return queryBuilder.getMany();
+  }
+
   async findAll(
     searchParams: ListPaginationDto,
     page?: PaginationParams,
@@ -336,6 +351,7 @@ export class InstrumentService {
       .createQueryBuilder('instrument')
       .leftJoinAndSelect('instrument.type', 'type')
       .leftJoinAndSelect('instrument.features', 'feature')
+      .leftJoinAndSelect('instrument.images', 'images')
       .leftJoinAndSelect('instrument.models', 'model')
       .leftJoinAndSelect('model.params', 'param')
       .distinct(true);
@@ -350,6 +366,12 @@ export class InstrumentService {
       queryBuilder.andWhere('type.id = :type', { type: searchParams.type });
     }
 
+    if (searchParams.typeType) {
+      queryBuilder.andWhere('type.type = :typeType', {
+        typeType: searchParams.typeType,
+      });
+    }
+
     const totalQuery = this.instrumentRepository
       .createQueryBuilder('instrument')
       .leftJoin('instrument.type', 'type')
@@ -357,6 +379,22 @@ export class InstrumentService {
       .leftJoin('instrument.models', 'model')
       .leftJoin('instrument.images', 'image')
       .select('COUNT(DISTINCT instrument.id)', 'count');
+
+    if (searchParams.name) {
+      totalQuery.andWhere('instrument.name like :name', {
+        name: `%${searchParams.name}%`,
+      });
+    }
+
+    if (searchParams.type) {
+      totalQuery.andWhere('type.id = :type', { type: searchParams.type });
+    }
+
+    if (searchParams.typeType) {
+      totalQuery.andWhere('type.type = :typeType', {
+        typeType: searchParams.typeType,
+      });
+    }
 
     const totalCountResult = await totalQuery.getRawOne();
     const totalCount = parseInt(totalCountResult.count, 10);
@@ -379,15 +417,13 @@ export class InstrumentService {
       items,
       meta: paginationMeta,
     };
-
-    // return paginate<Instrument, CustomPaginationMeta>(
-    //   queryBuilder,
-    //   getPaginationOptions(page),
-    // );
   }
 
   findOne(id: number) {
-    return this.instrumentRepository.findOneBy({ id });
+    return this.instrumentRepository.findOne({
+      where: { id },
+      relations: ['type', 'features', 'images', 'models', 'models.params'],
+    });
   }
 
   delete(id: number) {

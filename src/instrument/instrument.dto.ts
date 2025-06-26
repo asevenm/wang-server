@@ -192,5 +192,9 @@ export class ListPaginationDto {
   @IsNumber()
   type?: number;
 
+  @IsOptional()
+  @IsNumber()
+  typeType?: 1 | 2;
+
   page?: PaginationParams;
 }

@@ -19,7 +19,7 @@ export class Type {
   name: string;
 
   @Column()
-  type: 1 | 2;
+  type: 1 | 2; // 1: 仪器, 2: 试剂
 
   @TreeChildren()
   children: Type[];

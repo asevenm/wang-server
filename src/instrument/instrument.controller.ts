@@ -1,4 +1,12 @@
-import { Controller, Post, Get, Body, Param } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Get,
+  Body,
+  Param,
+  Query,
+  Delete,
+} from '@nestjs/common';
 import { InstrumentService } from './instrument.service';
 import {
   CreateInstrumentDto,
@@ -10,6 +18,11 @@ import { PayloadUser } from 'src/utils/user';
 @Controller('instrument')
 export class InstrumentController {
   constructor(private readonly instrumentService: InstrumentService) {}
+
+  @Get()
+  async getAllInstrument(@Query() searchParams: { typeType?: 1 | 2 }) {
+    return this.instrumentService.getAllInstrument(searchParams);
+  }
 
   @Post('save')
   saveOrUpdate(
@@ -37,12 +50,12 @@ export class InstrumentController {
     return { ...dataSource.meta, list: dataSource.items };
   }
 
-  @Get('delete/:id')
+  @Delete(':id')
   delete(@Param('id') id: string) {
     return this.instrumentService.delete(+id);
   }
 
-  @Get('detail/:id')
+  @Get(':id')
   findOne(@Param('id') id) {
     return this.instrumentService.findOne(+id);
   }

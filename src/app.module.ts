@@ -9,17 +9,18 @@ import { TransformInterceptor } from './interceptors/transform';
 import { ProductModule } from './product/product.module';
 import { FileModule } from './file/file.module';
 import { MessageModule } from './message/message.module';
+import { AgentBrandModule } from './agent-brand/agent-brand.module';
 
 @Module({
   // 在imports数组中添加FileModule
   imports: [
     TypeOrmModule.forRoot({
       type: 'mysql',
-      host: process.env.DB_HOST || '192.168.31.84',
+      host: process.env.DB_HOST || '127.0.0.1',
       port: parseInt(process.env.DB_PORT || '3306'),
       username: process.env.DB_USERNAME || 'root',
-      password: process.env.DB_PASSWORD || '123456',
-      database: process.env.DB_DATABASE || 'wang',
+      password: process.env.DB_PASSWORD || 'root@ncu',
+      database: process.env.DB_DATABASE || 'wang_db',
       synchronize: true,
       autoLoadEntities: true,
     }),
@@ -28,6 +29,7 @@ import { MessageModule } from './message/message.module';
     ProductModule,
     FileModule,
     MessageModule,
+    AgentBrandModule,
   ],
   controllers: [AppController],
   providers: [

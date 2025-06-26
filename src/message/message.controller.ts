@@ -25,9 +25,26 @@ export class MessageController {
     };
   }
 
-  @Get()
-  async findAll() {
-    return this.messageService.findAll();
+  @Post('list')
+  async findAll(
+    @Body()
+    body: {
+      page?: number;
+      pageSize?: number;
+      status?: number;
+      name?: string;
+      email?: string;
+      phone?: string;
+    },
+  ) {
+    return this.messageService.findAll(
+      body.page,
+      body.pageSize,
+      body.status,
+      body.name,
+      body.email,
+      body.phone,
+    );
   }
 
   @Get(':id')

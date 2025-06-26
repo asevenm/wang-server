@@ -22,9 +22,9 @@ export class Message {
   @Column('text')
   content: string;
 
-  @Column({ default: false })
-  isRead: boolean;
+  @Column({ default: 0 })
+  status: number;
 
-  @CreateDateColumn()
-  createdAt: Date;
+  @CreateDateColumn({ type: 'timestamp' })
+  createAt: Date;
 }

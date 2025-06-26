@@ -16,12 +16,33 @@ export class MessageService {
     return this.messageRepository.save(message);
   }
 
-  async findAll(): Promise<Message[]> {
-    return this.messageRepository.find({
-      order: {
-        createdAt: 'DESC',
-      },
-    });
+  // 分页查询
+  async findAll(
+    page = 1,
+    pageSize = 10,
+    status?: number,
+    name?: string,
+    email?: string,
+    phone?: string,
+  ) {
+    const qb = this.messageRepository.createQueryBuilder('message');
+    if (status) {
+      qb.andWhere('message.status = :status', { status });
+    }
+    if (name) {
+      qb.andWhere('message.name LIKE :name', { name: `%${name}%` });
+    }
+    if (email) {
+      qb.andWhere('message.email LIKE :email', { email: `%${email}%` });
+    }
+    if (phone) {
+      qb.andWhere('message.phone LIKE :phone', { phone: `%${phone}%` });
+    }
+    qb.orderBy('message.createAt', 'DESC')
+      .skip((page - 1) * pageSize)
+      .take(pageSize);
+    const [items, total] = await qb.getManyAndCount();
+    return { items, total };
   }
 
   async findOne(id: number): Promise<Message> {
@@ -33,7 +54,7 @@ export class MessageService {
     if (!message) {
       return null;
     }
-    message.isRead = true;
+    message.status = 1;
     return this.messageRepository.save(message);
   }
 
