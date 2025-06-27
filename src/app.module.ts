@@ -23,6 +23,7 @@ import { AgentBrandModule } from './agent-brand/agent-brand.module';
       database: process.env.DB_DATABASE || 'wang_db',
       synchronize: true,
       autoLoadEntities: true,
+      // logging: true,
     }),
     InstrumentModule,
     PictureModule,

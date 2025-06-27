@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, TreeRepository } from 'typeorm';
 import { Instrument } from './entities/instrument.entity';
@@ -432,6 +436,16 @@ export class InstrumentService {
 
   async findAllType() {
     return this.typeRepository.findTrees();
+    // try {
+    //   console.log('开始查询 types 表...');
+    //   const result = await this.typeRepository.findTrees();
+    //   console.log('查询成功，结果数量:', result.length);
+    //   return result;
+    // } catch (error) {
+    //   console.error('findAllType 错误:', error);
+    //   console.error('错误 SQL:', error.query); // 如果有的话
+    //   throw error;
+    // }
   }
 
   async deleteType(id: number) {

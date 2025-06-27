@@ -4,8 +4,8 @@ import {
   Get,
   Body,
   Param,
-  Query,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { InstrumentService } from './instrument.service';
 import {
@@ -55,11 +55,6 @@ export class InstrumentController {
     return this.instrumentService.delete(+id);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id) {
-    return this.instrumentService.findOne(+id);
-  }
-
   @Post('type/save')
   saveOrUpdateType(@Body() dto) {
     if (dto.id) {
@@ -81,5 +76,10 @@ export class InstrumentController {
   @Get('type-with-products')
   async getAllTypesWithProduct() {
     return this.instrumentService.getAllTypesWithProducts();
+  }
+
+  @Get(':id')
+  findOne(@Param('id') id) {
+    return this.instrumentService.findOne(+id);
   }
 }
