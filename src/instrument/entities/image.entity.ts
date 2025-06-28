@@ -18,6 +18,8 @@ export class Image {
   @CreateDateColumn()
   createTime: Date;
 
-  @ManyToOne(() => Instrument, (instrument) => instrument.images)
+  @ManyToOne(() => Instrument, (instrument) => instrument.images, {
+    onDelete: 'CASCADE',
+  })
   instrument: Instrument;
 }

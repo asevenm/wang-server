@@ -426,8 +426,37 @@ export class InstrumentService {
     });
   }
 
-  delete(id: number) {
-    return this.instrumentRepository.delete(id);
+  async delete(id: number) {
+    // 先查找仪器及其关联数据
+    const instrument = await this.instrumentRepository.findOne({
+      where: { id },
+      relations: ['images', 'features', 'models', 'models.params']
+    });
+
+    if (!instrument) {
+      throw new NotFoundException(`Instrument with ID ${id} not found`);
+    }
+
+    // 手动删除关联数据
+    if (instrument.images) {
+      await this.imageRepository.remove(instrument.images);
+    }
+
+    if (instrument.features) {
+      await this.featureRepository.remove(instrument.features);
+    }
+
+    if (instrument.models) {
+      for (const model of instrument.models) {
+        if (model.params) {
+          await this.paramRepository.remove(model.params);
+        }
+      }
+      await this.modelRepository.remove(instrument.models);
+    }
+
+    // 最后删除仪器
+    return this.instrumentRepository.remove(instrument);
   }
 
   async findAllType() {

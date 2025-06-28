@@ -35,7 +35,10 @@ export class Instrument {
   @Column()
   updator: string;
 
-  @OneToMany(() => Image, (picture) => picture.instrument, { cascade: true })
+  @OneToMany(() => Image, (picture) => picture.instrument, {
+    cascade: true,
+    onDelete: 'CASCADE',
+  })
   @Exclude({ toPlainOnly: true })
   images: Image[];
 
@@ -49,11 +52,17 @@ export class Instrument {
   @Column()
   desc: string;
 
-  @OneToMany(() => Feature, (feature) => feature.instrument, { cascade: true })
+  @OneToMany(() => Feature, (feature) => feature.instrument, {
+    cascade: true,
+    onDelete: 'CASCADE',
+  })
   @Exclude({ toPlainOnly: true })
   features: Feature[];
 
-  @OneToMany(() => Model, (model) => model.instrument, { cascade: true })
+  @OneToMany(() => Model, (model) => model.instrument, {
+    cascade: true,
+    onDelete: 'CASCADE',
+  })
   @Exclude({ toPlainOnly: true })
   models: Model[];
 
