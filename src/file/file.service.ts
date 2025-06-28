@@ -31,6 +31,7 @@ export class FileService {
     fileEntity.mimetype = file.mimetype;
     fileEntity.size = file.size;
     fileEntity.path = `uploads/${file.filename}`;
+    fileEntity.url = `/uploads/${file.filename}`;
     fileEntity.description = description;
     fileEntity.type = type;
 

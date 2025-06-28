@@ -26,6 +26,9 @@ export class File {
   path: string;
 
   @Column({ nullable: true })
+  url: string;
+
+  @Column({ nullable: true })
   description: string;
 
   @Column({ default: 'file' })
