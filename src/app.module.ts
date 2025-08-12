@@ -10,6 +10,8 @@ import { ProductModule } from './product/product.module';
 import { FileModule } from './file/file.module';
 import { MessageModule } from './message/message.module';
 import { AgentBrandModule } from './agent-brand/agent-brand.module';
+import { ServiceModule } from './service/service.module';
+import { CompanyModule } from './company/company.module';
 
 @Module({
   // 在imports数组中添加FileModule
@@ -31,6 +33,8 @@ import { AgentBrandModule } from './agent-brand/agent-brand.module';
     FileModule,
     MessageModule,
     AgentBrandModule,
+    ServiceModule,
+    CompanyModule,
   ],
   controllers: [AppController],
   providers: [
